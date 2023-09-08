@@ -8,15 +8,14 @@ import useResponsive from '../hooks/useResponsive';
 import Logo from '../components/logo';
 import Iconify from '../components/iconify';
 // sections
-import { LoginForm } from '../sections/auth/login';
+import { RegisterForm } from '../sections/auth/register'
 import { signInWithPopup } from 'firebase/auth';
-import { auth, provider, db } from '../firebase/firebaseConfig';
+import { auth, provider, storage, db } from '../firebase/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-import { doc, setDoc } from 'firebase/firestore';
 import Swal from 'sweetalert2';
+import { doc, setDoc } from 'firebase/firestore';
 import { Link } from 'react-router-dom';
 import bg from '../assets/church.png'
-
 // ----------------------------------------------------------------------
 
 
@@ -48,10 +47,9 @@ const StyledContent = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const mdUp = useResponsive('up', 'md');
   const navigate = useNavigate()
-
 
   const signInWithGoogle = async () => {
     try {
@@ -80,10 +78,13 @@ export default function LoginPage() {
     navigate('/Dashboard/app')
   }
 
+
+
+
   return (
     <>
       <Helmet>
-        <title> Login </title>
+        <title> Register | Pregnancy Monitoring System </title>
       </Helmet>
 
       <StyledRoot>
@@ -107,13 +108,12 @@ export default function LoginPage() {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-              Sign in to Parish Information System
+            Sign up to Parish Information System
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
-              Don’t have an account? {''}
-              <Link variant="subtitle2" to={'/register'}>Sign-up</Link>
-              
+              Already have an account? {''}
+              <Link variant="subtitle2" to={'/login'}>Sign In</Link>
             </Typography>
 
             <Stack direction="row" spacing={2}>
@@ -136,7 +136,7 @@ export default function LoginPage() {
               </Typography>
             </Divider>
 
-            <LoginForm />
+            <RegisterForm />
           </StyledContent>
         </Container>
       </StyledRoot>
