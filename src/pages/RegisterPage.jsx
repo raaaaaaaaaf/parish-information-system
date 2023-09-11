@@ -59,6 +59,7 @@ export default function RegisterPage() {
         uid: user.uid,
         displayName: user.displayName,
         email: user.email,
+        role: "User"
       })
       Swal.fire({
         icon: 'success',

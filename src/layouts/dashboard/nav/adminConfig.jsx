@@ -5,7 +5,7 @@ import SvgColor from '../../../components/svg-color';
 
 const icon = (name) => <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />;
 
-const navConfig = [
+const adminConfig = [
   {
     title: 'dashboard',
     path: '/dashboard/app',
@@ -17,25 +17,25 @@ const navConfig = [
     icon: icon('ic_user'),
   },
   {
-    title: 'product',
-    path: '/dashboard/products',
+    title: 'Baptismal Records',
+    path: '/dashboard/baptismal',
     icon: icon('ic_cart'),
   },
   {
-    title: 'blog',
-    path: '/dashboard/blog',
+    title: 'Marriage Contract',
+    path: '/dashboard/marriage',
     icon: icon('ic_blog'),
   },
   {
-    title: 'login',
-    path: '/login',
+    title: 'Burial Records',
+    path: '/dashboard/burial',
     icon: icon('ic_lock'),
   },
   {
-    title: 'Not found',
-    path: '/404',
+    title: 'Requested Documents',
+    path: '/dashboard/requested',
     icon: icon('ic_disabled'),
   },
 ];
 
-export default navConfig;
+export default adminConfig;

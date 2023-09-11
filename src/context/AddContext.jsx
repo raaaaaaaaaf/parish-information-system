@@ -1,0 +1,52 @@
+import { nanoid } from "nanoid";
+import { createContext, useState } from "react";
+
+
+export const AddFormContext = createContext();
+
+export function AddFormProvider ({children}) {
+    const [docId, setDocId] = useState("");
+    const [formData, setFormData] = useState({
+    // Step1
+        born: "",
+        childName: "",
+        church: "",
+        dob: "",
+        dobaptized: "",
+        parent1: "",
+        parent2: "",
+        rev: "",
+        sponsor1: "",
+        sponsor2: "",
+        sponsor3: "",
+        sponsor4: "",
+        isPaid: false,
+        price: 120,
+        docName: "Baptismal Certificate",
+    })
+    const [formData1, setFormData1] = useState({
+        address: "",
+        dod: "",
+        fullName: "",
+        pod: "",
+        isPaid: false,
+        price: 120,
+        docName: "Burial Certificate",
+    })
+
+    const [formData2, setFormData2] = useState({
+        address: "",
+        dom: "",
+        husband: "",
+        pom: "",
+        wife: "",
+        isPaid: false,
+        price: 120,
+        docName: "Marriage Certificate",
+    })
+    return (
+        <AddFormContext.Provider value={{formData, setFormData, docId, setDocId, formData1, setFormData1, formData2, setFormData2}}>
+            {children}
+        </AddFormContext.Provider>
+    )
+}

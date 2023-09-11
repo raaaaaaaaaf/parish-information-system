@@ -7,60 +7,76 @@ import BlogPage from './pages/BlogPage';
 import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import RegisterPage from './pages/RegisterPage';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
-import { AuthContext } from './context/AuthContext';
 import { useContext } from 'react';
+import { AuthContext } from './context/AuthContext';
 import Loading from './components/loading/Loading';
+import ClientAppPage from './pages/clientPages/ClientAppPage';
+import ReqBaptismal from './pages/clientPages/ReqBaptismal';
+import ViewDocuments from './pages/clientPages/ViewDocuments';
+import PayPal from './pages/clientPages/PayPal';
+import ReqBurial from './pages/clientPages/ReqBurial';
+import ReqMarriage from './pages/clientPages/ReqMarriage';
+import PDFBurial from './pages/clientPages/PDFBurial';
+import PDFBaptismal from './pages/clientPages/PDFBaptismal';
+import { AddFormContext } from './context/AddContext';
 
 // ----------------------------------------------------------------------
 
 
-
 export default function Router() {
 
-  const ProtectedRoute = ({ children }) => {
-    const { currentUser, loading, error } = useContext(AuthContext);
-    if (loading) {
-      // Render a loading indicator while authentication is in progress
-      
-      return <Loading />;
-    }
+  const {currentUser, loading, userData} =useContext(AuthContext)
   
-    if (error) {
-      // Render an error message if there was an authentication error
-      return <div>Error...</div>;
-    }
-  
-    if (!currentUser) {
-      // Redirect to the login page if the user is not authenticated
-      return <Navigate to="/login" />;
-    }
-     // Render the children if the user is authenticated
-    return children;
-  };
 
-
+  const ProtectedRoute = ({children, requiredRole}) => {
+    if(loading) {
+      return <Loading/>
+    }
+    if(!currentUser) {
+      return <Navigate to='/login'/>
+    }
+    if (requiredRole && userData.role !== requiredRole) {
+      if (userData.role === "Admin") {
+        return <Navigate to="/dashboard" />;
+      } else {
+        return <Navigate to="/client" />;
+      }
+   // Redirect to an unauthorized page or handle as needed
+    }
+    return children
+  }
   const routes = useRoutes([
     {
       path: '/dashboard',
-      element:  <DashboardLayout />,
+      element: <DashboardLayout />,
       children: [
-        { element: <Navigate to="/dashboard/app" />, index: true },
-        { path: 'app', element: <ProtectedRoute><DashboardAppPage /></ProtectedRoute> },
-        { path: 'user', element:  <ProtectedRoute><UserPage /></ProtectedRoute>},
-        { path: 'products', element: <ProtectedRoute><ProductsPage /></ProtectedRoute>},
-        { path: 'blog', element: <ProtectedRoute><BlogPage /></ProtectedRoute>},
+        { element: <ProtectedRoute requiredRole="Admin"><Navigate to="/dashboard/app" /></ProtectedRoute>, index: true },
+        { path: 'app', element: <ProtectedRoute requiredRole="Admin"><DashboardAppPage /></ProtectedRoute> },
+        { path: 'user', element: <ProtectedRoute requiredRole="Admin"><UserPage /></ProtectedRoute> },
+        { path: 'products', element: <ProductsPage /> },
+        { path: 'blog', element: <ProtectedRoute requiredRole="Admin"><BlogPage /></ProtectedRoute> },
+      ],
+    },
+    {
+      path: '/client',
+      element: <DashboardLayout />,
+      children: [
+        { element: <ProtectedRoute  requiredRole="User"><Navigate to="/client/app" /></ProtectedRoute>, index: true },
+        { path: 'app', element: <ProtectedRoute  requiredRole="User"><ClientAppPage /></ProtectedRoute> },
+        { path: 'reqbaptismal', element: <ProtectedRoute  requiredRole="User"><ReqBaptismal /></ProtectedRoute> },
+        { path: 'reqburial', element: <ProtectedRoute  requiredRole="User"><ReqBurial /></ProtectedRoute> },
+        { path: 'reqmarriage', element: <ProtectedRoute  requiredRole="User"><ReqMarriage /></ProtectedRoute> },
+        { path: 'viewdocs', element: <ProtectedRoute  requiredRole="User"><ViewDocuments /></ProtectedRoute> },
+        { path: 'viewdocs/pdfbaptismal/:id', element: <ProtectedRoute  requiredRole="User"><PDFBaptismal /></ProtectedRoute> },
+        { path: 'viewdocs/pdfburial/:id', element: <ProtectedRoute  requiredRole="User"><PDFBurial /></ProtectedRoute> },
+        { path: 'paypal', element: <ProtectedRoute  requiredRole="User"><PayPal /></ProtectedRoute> },
       ],
     },
     {
       path: 'login',
       element: <LoginPage />,
-    },
-    {
-      path: 'register',
-      element: <RegisterPage />,
     },
     {
       element: <SimpleLayout />,

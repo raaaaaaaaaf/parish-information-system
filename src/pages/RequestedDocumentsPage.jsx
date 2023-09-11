@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 // @mui
 import {
   Card,
@@ -30,18 +30,16 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
-import avt from '../assets/avatar_default.jpg'
-import { collection, doc, getDocs, query, where } from 'firebase/firestore';
-import { auth, db } from '../firebase/firebaseConfig';
-import { deleteUser } from 'firebase/auth';
-
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'name', label: 'Name', alignRight: false },
-  { id: 'email', label: 'Email', alignRight: false },
+  { id: 'company', label: 'Company', alignRight: false },
   { id: 'role', label: 'Role', alignRight: false },
+  { id: 'isVerified', label: 'Verified', alignRight: false },
+  { id: 'status', label: 'Status', alignRight: false },
+  { id: '' },
 ];
 
 // ----------------------------------------------------------------------
@@ -75,7 +73,7 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
+export default function RequestedDocumentsPage() {
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -89,29 +87,6 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
-
-  const [userList, setUserList] = useState([])
-  
-  const userRef = collection(db, "users");
-
-  useEffect(() => {
-    fetchUsers(); 
-  }, [])
-
-  const fetchUsers = async () => {
-    try {
-      const data = await getDocs(userRef);
-      const filteredData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setUserList(filteredData);
-      console.log(data)
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -129,7 +104,7 @@ export default function UserPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = userList.map((n) => n.name);
+      const newSelecteds = USERLIST.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -165,9 +140,9 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
-  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
@@ -182,6 +157,9 @@ export default function UserPage() {
           <Typography variant="h4" gutterBottom>
             User
           </Typography>
+          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+            New User
+          </Button>
         </Stack>
 
         <Card>
@@ -194,15 +172,15 @@ export default function UserPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={userList.length}
+                  rowCount={USERLIST.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                {Object.keys(userList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)).map((id, index) => {
-                    
-                    const selectedUser = selected.indexOf(userList[id].displayName) !== -1;
+                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                    const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
@@ -212,17 +190,28 @@ export default function UserPage() {
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={userList[id].displayName} src={avt} />
+                            <Avatar alt={name} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
-                              {userList[id].displayName}
+                              {name}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{userList[id].email}</TableCell>
+                        <TableCell align="left">{company}</TableCell>
 
-                        <TableCell align="left">{userList[id].role} </TableCell>
+                        <TableCell align="left">{role}</TableCell>
 
+                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+
+                        <TableCell align="left">
+                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
+                        </TableCell>
+
+                        <TableCell align="right">
+                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                            <Iconify icon={'eva:more-vertical-fill'} />
+                          </IconButton>
+                        </TableCell>
                       </TableRow>
                     );
                   })}

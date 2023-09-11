@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
@@ -6,7 +6,11 @@ import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover 
 import account from '../../../_mock/account';
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../../context/AuthContext';
+import Loading from '../../../components/loading/Loading';
+import { auth } from '../../../firebase/firebaseConfig';
 // ----------------------------------------------------------------------
+
 
 const MENU_OPTIONS = [
   {
@@ -27,6 +31,7 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState(null);
+  const {currentUser, userData, loading} = useContext(AuthContext);
   const nav = useNavigate();
 
   const handleOpen = (event) => {
@@ -47,6 +52,10 @@ export default function AccountPopover() {
 
   return (
     <>
+        {loading ? (
+      <div>Loading...</div>
+    ) : (
+      <>
       <IconButton
         onClick={handleOpen}
         sx={{
@@ -64,7 +73,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={currentUser.photoURL} alt="photoURL" />
       </IconButton>
 
       <Popover
@@ -88,10 +97,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {userData.displayName}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {userData.email}
           </Typography>
         </Box>
 
@@ -112,5 +121,9 @@ export default function AccountPopover() {
         </MenuItem>
       </Popover>
     </>
+    )}
+    </>
+
+
   );
 }
