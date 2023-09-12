@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
-import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 // @mui
 import {
   Card,
@@ -29,17 +28,21 @@ import Scrollbar from '../components/scrollbar';
 // sections
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
-import USERLIST from '../_mock/user';
-
+import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/firestore';
+import { db } from '../firebase/firebaseConfig';
+import { Link, useNavigate } from 'react-router-dom';
+import { EditFormContext } from '../context/EditContext';
+import Swal from 'sweetalert2';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
+  { id: 'name', label: 'Username', alignRight: false },
+  { id: 'fullname', label: 'Full Name', alignRight: false },
+  { id: 'gender', label: 'Gender', alignRight: false },
+  { id: 'dod', label: 'Date of Death', alignRight: false },
+  { id: 'price', label: 'Price', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
-  { id: '' },
+  { id: 'act', label: 'Action', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -88,6 +91,46 @@ export default function BurialRecordPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [docsList, setDocsList] = useState([])
+
+  const {setDocId} = useContext(EditFormContext)
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = [];
+
+        const docsQuery = query(collection(db, "docsData"), where("docType", "==", "Burial"))
+        const docsSnap = await getDocs(docsQuery)
+        docsSnap.forEach((doc) => {
+          data.push({
+            id: doc.id,
+            ...doc.data()
+          });
+        });
+        setDocsList(data);
+        console.log(data)
+      } catch(err) {
+        console.error(err)
+      }
+    }
+    fetchData()
+  }, [])
+
+
+  const deleteBurial = async (id) => {
+    const docsRef = doc(db, "docsData", id)
+    Swal.fire(
+      'Deleted!',
+      'Information has been deleted.',
+      'success'
+    )
+    await deleteDoc(docsRef);
+    navigate('/dashboard/burial')
+  }
+
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -104,7 +147,7 @@ export default function BurialRecordPage() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = docsList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -140,26 +183,23 @@ export default function BurialRecordPage() {
     setFilterName(event.target.value);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - docsList.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(docsList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
 
   return (
     <>
       <Helmet>
-        <title> User | Minimal UI </title>
+        <title> Burial Record | Birhen Del Carmen Online Parish Information System   </title>
       </Helmet>
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+            Burial Records
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
-          </Button>
         </Stack>
 
         <Card>
@@ -172,45 +212,65 @@ export default function BurialRecordPage() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={docsList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+                  {docsList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((docs, index) => {
+
+                    const selectedUser = selected.indexOf(docs.userName) !== -1;
 
                     return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={index} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, docs.childName)} />
                         </TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
+                            <Avatar alt={docs.userName} src={`/assets/images/avatars/avatar_${index + 1}.jpg`} />
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {docs.userName}
                             </Typography>
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{company}</TableCell>
+                        <TableCell align="left">{docs.fullName}</TableCell>
 
-                        <TableCell align="left">{role}</TableCell>
+                        <TableCell align="left">{docs.gender}</TableCell>
 
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                        <TableCell align="left">{docs.dod}</TableCell>
+
+                        <TableCell align="left">₱{docs.price}</TableCell>
 
                         <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
+                        {docs.isPaid ? (
+                          <Label color={'success'}>Paid</Label>
+                        ) : (
+                          <Label color={'error'}>Unpaid</Label>
+                        )}
+                          
                         </TableCell>
 
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
+                        <TableCell align="left">
+                          <Link to={`editburial/${docs.id}`} style={{ textDecoration: 'none', color: 'black'}}>
+                          <IconButton size="large" color="inherit" onClick={() => setDocId(docs.id)}>
+                            <Iconify icon={'material-symbols:edit-outline'} />
                           </IconButton>
+                          </Link>
+
+                          <IconButton size="large" color="inherit" onClick={() => deleteBurial(docs.id)}>
+                            <Iconify icon={'material-symbols:delete-outline'} />
+                          </IconButton>
+
+                          <Link to={`viewburial/${docs.id}`} style={{ textDecoration: 'none', color: 'black'}}>
+                          <IconButton size="large" color="inherit">
+                            <Iconify icon={'carbon:view'}/>
+                          </IconButton>
+                          </Link>
+
                         </TableCell>
                       </TableRow>
                     );
@@ -252,7 +312,7 @@ export default function BurialRecordPage() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={docsList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

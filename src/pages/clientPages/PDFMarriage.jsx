@@ -26,10 +26,10 @@ Font.register({
       textAlign: 'center',
       fontFamily: 'Oswald'
     },
-    subtitle: {
+    subtitle1: {
       fontSize: 20,
       margin: 12,
-      textAlign: 'center',
+      textAlign: 'justify',
       fontFamily: 'Oswald'
     },
     text: {
@@ -129,7 +129,7 @@ const PDFMarriage = () => {
           });
         };
     
-        // Only generate PDF when pregnancy data is available
+        // Only generate PDF when docs data is available
         if (docs.id) {
           generatePDF();
           navigate('/client/viewdocs')

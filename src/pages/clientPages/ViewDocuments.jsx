@@ -21,7 +21,9 @@ import { fCurrency } from '../../utils/formatNumber';
 import PayPal from './PayPal';
 import { Link } from 'react-router-dom';
 import { AddFormContext } from '../../context/AddContext';
-
+import bap from '../../assets/baptismalcert.jpg'
+import bur from '../../assets/burial.jpg'
+import mar from '../../assets/marriage.jpg'
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -100,15 +102,42 @@ export default function ViewDocuments() {
                         UNPAID
                     </Label>
                 )}
-
+                  {docs.docType === "Baptismal" && (
+                    
                   <CardMedia
+                  component="div"
+                  sx={{
+                    // 16:9
+                    pt: '56.25%',
+                  }}
+                  image={bap}
+                />
+                  )}
+
+                  {docs.docType === "Burial" && (
+                    
+                    <CardMedia
                     component="div"
                     sx={{
                       // 16:9
                       pt: '56.25%',
                     }}
-                    image="https://source.unsplash.com/random?wallpapers"
+                    image={bur}
                   />
+                    )}
+
+                  {docs.docType === "Marriage" && (
+                    
+                    <CardMedia
+                    component="div"
+                    sx={{
+                      // 16:9
+                      pt: '56.25%',
+                    }}
+                    image={mar}
+                  />
+                    )}
+
                 </Box>
 
                   <CardContent sx={{ flexGrow: 1 }}>

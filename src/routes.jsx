@@ -22,6 +22,13 @@ import PDFBurial from './pages/clientPages/PDFBurial';
 import PDFBaptismal from './pages/clientPages/PDFBaptismal';
 import { AddFormContext } from './context/AddContext';
 import PDFMarriage from './pages/clientPages/PDFMarriage';
+import BaptismalRecordPage from './pages/BaptismalRecordPage';
+import BurialRecordPage from './pages/BurialRecordPage';
+import MarriageContractPage from './pages/MarriageContactPage';
+import EditBaptismal from './pages/EditBaptismal';
+import MarriageContactPage from './pages/MarriageContactPage';
+import EditMarriage from './pages/EditMarriage';
+import EditBurial from './pages/EditBurial';
 
 // ----------------------------------------------------------------------
 
@@ -56,7 +63,15 @@ export default function Router() {
         { element: <ProtectedRoute requiredRole="Admin"><Navigate to="/dashboard/app" /></ProtectedRoute>, index: true },
         { path: 'app', element: <ProtectedRoute requiredRole="Admin"><DashboardAppPage /></ProtectedRoute> },
         { path: 'user', element: <ProtectedRoute requiredRole="Admin"><UserPage /></ProtectedRoute> },
-        { path: 'products', element: <ProductsPage /> },
+        { path: 'baptismal', element: <ProtectedRoute requiredRole="Admin"><BaptismalRecordPage /></ProtectedRoute> },
+        { path: 'baptismal/editbaptismal/:id', element: <ProtectedRoute requiredRole="Admin"><EditBaptismal /></ProtectedRoute> },
+        { path: 'baptismal/viewbaptismal/:id', element: <ProtectedRoute requiredRole="Admin"><PDFBaptismal /></ProtectedRoute> },
+        { path: 'burial', element: <ProtectedRoute requiredRole="Admin"><BurialRecordPage /></ProtectedRoute> },
+        { path: 'burial/editburial/:id', element: <ProtectedRoute requiredRole="Admin"><EditBurial /></ProtectedRoute> },
+        { path: 'burial/viewburial/:id', element: <ProtectedRoute requiredRole="Admin"><PDFBurial /></ProtectedRoute> },
+        { path: 'marriage', element: <ProtectedRoute requiredRole="Admin"><MarriageContactPage /></ProtectedRoute> },
+        { path: 'marriage/editmarriage/:id', element: <ProtectedRoute requiredRole="Admin"><EditMarriage /></ProtectedRoute> },
+        { path: 'marriage/viewmarriage/:id', element: <ProtectedRoute requiredRole="Admin"><PDFMarriage /></ProtectedRoute> },
         { path: 'blog', element: <ProtectedRoute requiredRole="Admin"><BlogPage /></ProtectedRoute> },
       ],
     },

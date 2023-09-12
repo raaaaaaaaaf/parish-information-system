@@ -63,6 +63,7 @@ export default function ReqMarriage () {
                 marital1: formData2.marital1,
                 address1: formData2.address1,
 
+                
                 docName: formData2.docName,
                 isPaid: formData2.isPaid,
                 userName: userData.displayName,
@@ -98,7 +99,7 @@ export default function ReqMarriage () {
           <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
             <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
               <Typography component="h1" variant="h4" align="center">
-                Request Burial Certificate
+                Request Marriage Contract
               </Typography>
               <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
                 {steps.map((label) => (

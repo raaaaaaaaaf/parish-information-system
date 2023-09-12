@@ -44,18 +44,18 @@ export default function ReqBurial ()  {
                 
                 age: formData1.age,
                 cod: formData1.cod,
-                docName: formData1.docName,
-                docType: formData1.docType,
                 dod: formData1.dod,
                 fullName: formData1.fullName,
                 gender: formData1.gender,
-                isPaid: formData1.isPaid,
                 marital: formData1.marital,
-                occupation:formData1.occupation,
+                occupation: formData1.occupation,
+                userName: userData.displayName,
+                docName: formData1.docName,
+                isPaid: formData1.isPaid,
+                uid : currentUser.uid,
                 price: formData1.price,
                 timeStamp: serverTimestamp(),
-                userName: userData.displayName,
-                uid : currentUser.uid,
+                docType: formData1.docType,
             })
 
             Swal.fire(
