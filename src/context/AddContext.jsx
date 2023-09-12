@@ -40,11 +40,22 @@ export function AddFormProvider ({children}) {
     })
 
     const [formData2, setFormData2] = useState({
+        fullName: "",
+        father: "",
+        mother: "",
+        dob: "",
+        pob: "",
+        marital: "",
         address: "",
-        dom: "",
-        husband: "",
-        pom: "",
-        wife: "",
+
+        fullName1: "",
+        father1: "",
+        mother1: "",
+        dob1: "",
+        pob1: "",
+        marital1: "",
+        address1: "",
+
         isPaid: false,
         price: 120,
         docName: "Marriage Certificate",

@@ -18,15 +18,18 @@ import { AddFormContext } from '../../context/AddContext';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
+import Step2Form from '../../layouts/reqMarriage/Step2Form';
 
 
 
-const steps = ['Couple Information'];
+const steps = ['BRIDE INFORMATION', 'BRIDEGROOM INFORMATION'];
 
 function getStepContent(step) {
   switch (step) {
     case 0:
       return <Step1Form />;
+    case 1:
+      return <Step2Form />;
 
     default:
       throw new Error('Unknown step');
@@ -44,11 +47,22 @@ export default function ReqMarriage () {
     const addMarriage = async () => {
         try {
             await addDoc(docsRef, {
+                fullName: formData2.fullName,
+                father: formData2.father,
+                mother: formData2.mother,
+                dob: formData2.dob,
+                pob: formData2.pob,
+                marital: formData2.marital,
                 address: formData2.address,
-                dom: formData2.dom,
-                husband: formData2.husband,
-                pom: formData2.pom,
-                wife: formData2.wife,
+        
+                fullName1: formData2.fullName1,
+                father1: formData2.father1,
+                mother1: formData2.mother1,
+                dob1: formData2.dob1,
+                pob1: formData2.pob1,
+                marital1: formData2.marital1,
+                address1: formData2.address1,
+
                 docName: formData2.docName,
                 isPaid: formData2.isPaid,
                 userName: userData.displayName,

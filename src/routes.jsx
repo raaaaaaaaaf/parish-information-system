@@ -21,6 +21,7 @@ import ReqMarriage from './pages/clientPages/ReqMarriage';
 import PDFBurial from './pages/clientPages/PDFBurial';
 import PDFBaptismal from './pages/clientPages/PDFBaptismal';
 import { AddFormContext } from './context/AddContext';
+import PDFMarriage from './pages/clientPages/PDFMarriage';
 
 // ----------------------------------------------------------------------
 
@@ -71,6 +72,7 @@ export default function Router() {
         { path: 'viewdocs', element: <ProtectedRoute  requiredRole="User"><ViewDocuments /></ProtectedRoute> },
         { path: 'viewdocs/pdfbaptismal/:id', element: <ProtectedRoute  requiredRole="User"><PDFBaptismal /></ProtectedRoute> },
         { path: 'viewdocs/pdfburial/:id', element: <ProtectedRoute  requiredRole="User"><PDFBurial /></ProtectedRoute> },
+        { path: 'viewdocs/pdfmarriage/:id', element: <ProtectedRoute  requiredRole="User"><PDFMarriage /></ProtectedRoute> },
         { path: 'paypal', element: <ProtectedRoute  requiredRole="User"><PayPal /></ProtectedRoute> },
       ],
     },

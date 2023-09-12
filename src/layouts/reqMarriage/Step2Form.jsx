@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 
 
-export default function Step1Form () {
+export default function Step2Form () {
     const {formData2, setFormData2} = useContext(AddFormContext);
           // Define the handleInputChange function to update formData
     const handleInputChange = (e) => {
@@ -18,15 +18,15 @@ export default function Step1Form () {
   return (
     <React.Fragment>
     <Typography variant="h6" gutterBottom>
-      BRIDE
+      BRIDEGROOM
     </Typography>
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <TextField
           required
-          id="fullName"
-          name="fullName"
-          value={formData2.fullName}
+          id="fullName1"
+          name="fullName1"
+          value={formData2.fullName1}
           onChange={handleInputChange}
           label="Full Name"
           fullWidth
@@ -36,9 +36,9 @@ export default function Step1Form () {
       <Grid item xs={12} >
         <TextField
           required
-          id="father"
-          name="father"
-          value={formData2.father}
+          id="father1"
+          name="father1"
+          value={formData2.father1}
           onChange={handleInputChange}
           label="Father's Name"
           fullWidth
@@ -48,9 +48,9 @@ export default function Step1Form () {
       <Grid item xs={12} >
         <TextField
           required
-          id="mother"
-          name="mother"
-          value={formData2.mother}
+          id="mother1"
+          name="mother1"
+          value={formData2.mother1}
           onChange={handleInputChange}
           label="Mother's Name"
           fullWidth
@@ -60,9 +60,9 @@ export default function Step1Form () {
       <Grid item xs={12}>
         <TextField
           required
-          id="dob"
-          name="dob"
-          value={formData2.dob}
+          id="dob1"
+          name="dob1"
+          value={formData2.dob1}
           onChange={handleInputChange}
           label="Date of Birth"
           fullWidth
@@ -72,21 +72,22 @@ export default function Step1Form () {
       <Grid item xs={12}>
         <TextField
           required
-          id="pob"
-          name="pob"
-          value={formData2.pob}
+          id="pob1"
+          name="pob1"
+          value={formData2.pob1}
           onChange={handleInputChange}
           label="Place of Birth"
           fullWidth
           variant="standard"
         />
       </Grid>
+
       <Grid item xs={12}>
         <TextField
           required
-          id="marital"
-          name="marital"
-          value={formData2.marital}
+          id="marital1"
+          name="marital1"
+          value={formData2.marital1}
           onChange={handleInputChange}
           label="Marital Status"
           fullWidth
@@ -98,9 +99,9 @@ export default function Step1Form () {
       <Grid item xs={12}>
         <TextField
           required
-          id="address"
-          name="address"
-          value={formData2.address}
+          id="address1"
+          name="address1"
+          value={formData2.address1}
           onChange={handleInputChange}
           label="Complete Address"
           fullWidth

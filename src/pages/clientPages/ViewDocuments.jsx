@@ -133,7 +133,7 @@ export default function ViewDocuments() {
                           </Link>
                         )}
                         {docs.docType === "Marriage" && (
-                          <Link to={`pdfburial/${docs.id}`}>
+                          <Link to={`pdfmarriage/${docs.id}`}>
                             <Button size="small">View Marriage</Button>
                           </Link>
                         )}
