@@ -25,13 +25,18 @@ export function AddFormProvider ({children}) {
         docName: "Baptismal Certificate",
     })
     const [formData1, setFormData1] = useState({
-        address: "",
+        age: "",
+        cod: "",
+        docName: "Burial Certificate",
+        docType: "Burial",
         dod: "",
         fullName: "",
-        pod: "",
+        gender: "",
         isPaid: false,
+        marital: "",
+        occupation: "",
         price: 120,
-        docName: "Burial Certificate",
+        
     })
 
     const [formData2, setFormData2] = useState({

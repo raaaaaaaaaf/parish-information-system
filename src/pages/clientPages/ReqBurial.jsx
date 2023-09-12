@@ -42,16 +42,20 @@ export default function ReqBurial ()  {
         try {
             await addDoc(docsRef, {
                 
+                age: formData1.age,
+                cod: formData1.cod,
+                docName: formData1.docName,
+                docType: formData1.docType,
                 dod: formData1.dod,
                 fullName: formData1.fullName,
-                pod: formData1.pod,
-                userName: userData.displayName,
-                docName: formData1.docName,
+                gender: formData1.gender,
                 isPaid: formData1.isPaid,
-                uid : currentUser.uid,
+                marital: formData1.marital,
+                occupation:formData1.occupation,
                 price: formData1.price,
                 timeStamp: serverTimestamp(),
-                docType: "Burial",
+                userName: userData.displayName,
+                uid : currentUser.uid,
             })
 
             Swal.fire(

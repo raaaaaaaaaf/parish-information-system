@@ -39,7 +39,7 @@ export default function Step2Form () {
           name="sponsor1"
           value={formData.sponsor1}
           onChange={handleInputChange}
-          label="LMP"
+          label="Sponsors"
           fullWidth
           autoComplete="family-name"
           variant="standard"
@@ -52,7 +52,7 @@ export default function Step2Form () {
           name="sponsor2"
           value={formData.sponsor2}
           onChange={handleInputChange}
-          label="Age"
+          label="Sponsors"
           fullWidth
           variant="standard"
           
@@ -65,7 +65,7 @@ export default function Step2Form () {
           name="sponsor3"
           value={formData.sponsor3}
           onChange={handleInputChange}
-          label="Place of Birth"
+          label="Sponsors"
           fullWidth
           variant="standard"
         />
@@ -77,7 +77,7 @@ export default function Step2Form () {
           name="sponsor4"
           value={formData.sponsor4}
           onChange={handleInputChange}
-          label="Date of Birth"
+          label="Sponsors"
           fullWidth
           variant="standard"
         />

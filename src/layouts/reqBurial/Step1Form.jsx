@@ -45,14 +45,64 @@ export default function Step1Form () {
           variant="standard"
         />
       </Grid>
+      <Grid item xs={12} >
+        <TextField
+          required
+          id="gender"
+          name="gender"
+          value={formData1.gender}
+          onChange={handleInputChange}
+          label="Gender"
+          fullWidth
+          variant="standard"
+        />
+      </Grid>
+      <Grid item xs={12} >
+        <TextField
+          required
+          id="age"
+          name="age"
+          value={formData1.age}
+          onChange={handleInputChange}
+          label="Age"
+          fullWidth
+          variant="standard"
+        />
+      </Grid>
       <Grid item xs={12}>
         <TextField
           required
-          id="pod"
-          name="pod"
-          value={formData1.pod}
+          id="cod"
+          name="cod"
+          value={formData1.cod}
           onChange={handleInputChange}
-          label="Place of Death"
+          label="Cause of Death"
+          fullWidth
+          variant="standard"
+          
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          required
+          id="occupation"
+          name="occupation"
+          value={formData1.occupation}
+          onChange={handleInputChange}
+          label="Occupation"
+          fullWidth
+          variant="standard"
+          
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <TextField
+          required
+          id="marital"
+          name="marital"
+          value={formData1.marital}
+          onChange={handleInputChange}
+          label="Marital Status"
           fullWidth
           variant="standard"
           

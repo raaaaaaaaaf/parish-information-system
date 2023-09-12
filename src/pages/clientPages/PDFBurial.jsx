@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Page, Text, View, Document, StyleSheet, pdf, Image, Font, Line } from '@react-pdf/renderer';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
 
@@ -9,37 +9,61 @@ Font.register({
     src: 'https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf'
   });
 const styles = StyleSheet.create({
-    page: {
-        fontFamily: 'Oswald',
-        padding: 40,
-      },
-      top : {
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      },
-      title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        textAlign: "center",
-        width: '40%',
-      },
-      author: {
-        fontSize: 14,
-        textAlign: "center",
-        width: '20%',
-      },
-      footer: {
-        fontSize: 8,
-        marginBottom: 20,
-        textAlign: 'center',
-        color: 'grey',
-      },
+  body: {
+    paddingTop: 35,
+    paddingBottom: 65,
+    paddingHorizontal: 35,
+  },
+  title: {
+    fontSize: 40,
+    textAlign: 'justify',
+    fontFamily: 'Oswald'
+  },  
+  date: {
+    fontSize: 12,
+    textAlign: 'justify',
+    marginTop: 40,
+    marginBottom: 40,
+  },
+  subtitle: {
+    fontSize: 18,
+    textAlign: 'justify',
+    fontFamily: 'Oswald'
+  },
+  text: {
+    margin: 12,
+    fontSize: 14,
+    textAlign: 'justify',
+    fontFamily: 'Times-Roman'
+  },
+  utext: {
+    margin: 12,
+    fontSize: 14,
+    textAlign: 'justify',
+    fontFamily: 'Times-Roman',
+    textDecoration: 'underline'
+  },
+  columnsContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  column: {
+    width: '50%', // Adjust the width as needed
+  },
+  footer: {
+    fontSize: 8,
+    marginTop: 40,
+    marginBottom: 20,
+    textAlign: 'center',
+    color: 'grey',
+  },
 })
 
 const PDFBurial = () => {
     const [docs, setDocs] = useState({});
     const {id} = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const docsRef = doc(db, "docsData", id);
@@ -65,21 +89,31 @@ const PDFBurial = () => {
         const generatePDF = () => {
           const PDF = (
             <Document>
-                <Page size="A4" style={styles.page}>
-                  <View style={styles.top}>
-                    {/* <View style={styles.leftlogo}>
-                      <Image style={styles.image} src={logo}></Image>
-                    </View> */}
-                    <Text style={styles.title}></Text>
-                    <Text style={styles.author}>{docs.docName}</Text>
-                    {/* <View style={styles.rightlogo}>
-                      <Image style={styles.image} src={logo}></Image>
-                    </View> */}
-                  
-                  </View>
-
-                    <Text style={styles.footer} fixed>~ System generated document ~</Text>
-                </Page>
+            <Page size="A4" style={styles.body}>
+                <Text style={styles.title}>Death Certificate</Text>
+                <Text style={styles.subtitle}>Birhen Del Carmen Online Parish Information System </Text>
+                <Text style={styles.date}>Date: {new Date(docs.timeStamp.seconds * 1000).toLocaleDateString("en-US")}</Text>
+                <Text style={styles.text}>This is to certify that the records show that</Text>
+                <Text style={styles.text}>Mr.  /  Miss  /  Mrs.   {docs.fullName}</Text>
+                <Text style={styles.text}>Died at {docs.dod}</Text>
+                <Text style={styles.text}>Gender: {docs.gender}</Text>
+                <Text style={styles.text}>Age: {docs.age}</Text>
+                <Text style={styles.text}>Cause of Death: </Text>
+                <Text style={styles.utext}>{docs.cod}</Text>
+                <View style={styles.columnsContainer}>
+                {/* Left Column */}
+                <View style={styles.column}>
+                <Text style={styles.text}>Occupation:  <Text style={styles.utext}>{docs.occupation}</Text></Text>
+                </View>
+                {/* Right Column */}
+                <View style={styles.column}>
+                <Text style={styles.text}> Marital Status:  <Text style={styles.utext}>{docs.marital}</Text></Text>
+                </View>
+                </View>
+                <Text style={styles.text}>We are issuing this certificate on the specific request of {docs.userName} without accepting any </Text>
+                <Text style={styles.text}>liability on behalf of this certificate or part of this on our organization.  </Text>
+                <Text style={styles.footer} fixed>~ System generated document ~</Text>
+            </Page>
             </Document>
           );
     
