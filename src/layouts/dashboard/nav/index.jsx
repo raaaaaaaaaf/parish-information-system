@@ -16,8 +16,7 @@ import NavSection from '../../../components/nav-section';
 import adminConfig from './adminconfig';
 import userConfig from './userConfig';
 import { AuthContext } from '../../../context/AuthContext';
-import Loading from '../../../components/loading/Loading';
-
+import avt from '../../../assets/avatar_default.jpg'
 // ----------------------------------------------------------------------
 
 const NAV_WIDTH = 280;
@@ -53,7 +52,7 @@ export default function Nav({ openNav, onCloseNav }) {
   const renderContent = (
 <>
       {loading ? (
-    <Loading/>
+    <div>...</div>
        ) : (
     <Scrollbar
       sx={{
@@ -68,7 +67,7 @@ export default function Nav({ openNav, onCloseNav }) {
       <Box sx={{ mb: 5, mx: 2.5 }}>
         <Link underline="none">
           <StyledAccount>
-            <Avatar src={currentUser.photoURL} alt="photoURL" />
+            <Avatar src={currentUser.photoURL ?? avt} alt="photoURL" />
 
             <Box sx={{ ml: 2 }}>
               <Typography variant="subtitle2" sx={{ color: 'text.primary' }}>

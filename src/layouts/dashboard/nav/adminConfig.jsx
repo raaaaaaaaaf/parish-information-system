@@ -1,4 +1,5 @@
 // component
+import Iconify from '../../../components/iconify';
 import SvgColor from '../../../components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -9,33 +10,29 @@ const adminConfig = [
   {
     title: 'dashboard',
     path: '/dashboard/app',
-    icon: icon('ic_analytics'),
+    icon: <Iconify icon={'carbon:analytics'}/>,
   },
   {
     title: 'user',
     path: '/dashboard/user',
-    icon: icon('ic_user'),
+    icon: <Iconify icon={'mdi:users'}/>,
   },
   {
     title: 'Baptismal Records',
     path: '/dashboard/baptismal',
-    icon: icon('ic_cart'),
+    icon: <Iconify icon={'line-md:document-remove-twotone'}/>
   },
   {
     title: 'Marriage Contract',
     path: '/dashboard/marriage',
-    icon: icon('ic_blog'),
+    icon: <Iconify icon={'fluent:document-heart-24-filled'}/>
   },
   {
     title: 'Burial Records',
     path: '/dashboard/burial',
-    icon: icon('ic_lock'),
+    icon: <Iconify icon={'line-md:document-report-twotone'}/>
   },
-  {
-    title: 'Requested Documents',
-    path: '/dashboard/requested',
-    icon: icon('ic_disabled'),
-  },
+
 ];
 
 export default adminConfig;

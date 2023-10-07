@@ -9,7 +9,7 @@ import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from './context/AuthContext';
 import Loading from './components/loading/Loading';
 import ClientAppPage from './pages/clientPages/ClientAppPage';
@@ -29,6 +29,7 @@ import EditBaptismal from './pages/EditBaptismal';
 import MarriageContactPage from './pages/MarriageContactPage';
 import EditMarriage from './pages/EditMarriage';
 import EditBurial from './pages/EditBurial';
+import RegisterPage from './pages/RegisterPage';
 
 // ----------------------------------------------------------------------
 
@@ -39,8 +40,26 @@ export default function Router() {
   
 
   const ProtectedRoute = ({children, requiredRole}) => {
-    if(loading) {
-      return <Loading/>
+    const [timedOut, setTimedOut] = useState(false);
+  
+    useEffect(() => {
+      // Set a timeout to consider the loading taking too long
+      const timeoutId = setTimeout(() => {
+        setTimedOut(true);
+      }, 2000); // 5 seconds timeout (adjust as needed)
+  
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }, []);
+  
+    if (loading) {
+      if (timedOut) {
+        // Redirect to login page if loading takes too long
+        return <Navigate to="/login" replace />;
+      } else {
+        return <Loader/>
+      }
     }
     if(!currentUser) {
       return <Navigate to='/login'/>
@@ -56,6 +75,20 @@ export default function Router() {
     return children
   }
   const routes = useRoutes([
+    {
+      path: 'login',
+      element: <LoginPage />,
+    },
+
+    {
+      path: 'register',
+      element: <RegisterPage />,
+    },
+    {
+      path: '/',
+      // Redirect to the login page when accessing the root URL
+      element: <Navigate to="/login" replace />,
+    },
     {
       path: '/dashboard',
       element: <DashboardLayout />,
@@ -73,6 +106,7 @@ export default function Router() {
         { path: 'marriage/editmarriage/:id', element: <ProtectedRoute requiredRole="Admin"><EditMarriage /></ProtectedRoute> },
         { path: 'marriage/viewmarriage/:id', element: <ProtectedRoute requiredRole="Admin"><PDFMarriage /></ProtectedRoute> },
         { path: 'blog', element: <ProtectedRoute requiredRole="Admin"><BlogPage /></ProtectedRoute> },
+
       ],
     },
     {
@@ -84,11 +118,13 @@ export default function Router() {
         { path: 'reqbaptismal', element: <ProtectedRoute  requiredRole="User"><ReqBaptismal /></ProtectedRoute> },
         { path: 'reqburial', element: <ProtectedRoute  requiredRole="User"><ReqBurial /></ProtectedRoute> },
         { path: 'reqmarriage', element: <ProtectedRoute  requiredRole="User"><ReqMarriage /></ProtectedRoute> },
-        { path: 'viewdocs', element: <ProtectedRoute  requiredRole="User"><ViewDocuments /></ProtectedRoute> },
+        { path: 'viewdoc', element: <ProtectedRoute  requiredRole="User"><ViewDocuments /></ProtectedRoute> },
+        { path: 'viewdocs', element: <ProtectedRoute  requiredRole="User"><ProductsPage /></ProtectedRoute> },
         { path: 'viewdocs/pdfbaptismal/:id', element: <ProtectedRoute  requiredRole="User"><PDFBaptismal /></ProtectedRoute> },
         { path: 'viewdocs/pdfburial/:id', element: <ProtectedRoute  requiredRole="User"><PDFBurial /></ProtectedRoute> },
         { path: 'viewdocs/pdfmarriage/:id', element: <ProtectedRoute  requiredRole="User"><PDFMarriage /></ProtectedRoute> },
         { path: 'paypal', element: <ProtectedRoute  requiredRole="User"><PayPal /></ProtectedRoute> },
+       
       ],
     },
     {

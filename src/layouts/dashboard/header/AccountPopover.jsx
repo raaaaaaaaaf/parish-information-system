@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../../context/AuthContext';
 import Loading from '../../../components/loading/Loading';
 import { auth } from '../../../firebase/firebaseConfig';
+import avt from '../../../assets/avatar_default.jpg'
 // ----------------------------------------------------------------------
 
 
@@ -53,7 +54,7 @@ export default function AccountPopover() {
   return (
     <>
         {loading ? (
-      <div>Loading...</div>
+      <div>...</div>
     ) : (
       <>
       <IconButton
@@ -73,7 +74,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={currentUser.photoURL} alt="photoURL" />
+        <Avatar src={currentUser.photoURL ?? avt} alt="photoURL" />
       </IconButton>
 
       <Popover

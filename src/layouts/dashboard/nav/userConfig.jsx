@@ -1,4 +1,5 @@
 // component
+import Iconify from '../../../components/iconify/Iconify';
 import SvgColor from '../../../components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -9,27 +10,27 @@ const userConfig = [
   {
     title: 'dashboard',
     path: '/client/app',
-    icon: icon('ic_analytics'),
+    icon: <Iconify icon={'carbon:analytics'}/>,
   },
   {
     title: 'Request Baptismal',
     path: '/client/reqbaptismal',
-    icon: icon('ic_user'),
+    icon: <Iconify icon={'fluent:document-search-24-filled'}/>,
   },
   {
     title: 'Request Burial',
     path: '/client/reqburial',
-    icon: icon('ic_user'),
+    icon: <Iconify icon={'fluent:document-search-24-filled'}/>,
   },
   {
     title: 'Request Marriage Contract',
     path: '/client/reqmarriage',
-    icon: icon('ic_user'),
+    icon: <Iconify icon={'fluent:document-search-24-filled'}/>,
   },
   {
     title: 'View Documents',
     path: '/client/viewdocs',
-    icon: icon('ic_user'),
+    icon: <Iconify icon={'carbon:document-view'}/>,
   },
 ];
 

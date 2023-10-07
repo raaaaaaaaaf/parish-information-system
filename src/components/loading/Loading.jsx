@@ -1,6 +1,7 @@
 import * as React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import loader from '../../assets/loader.gif'
 
 export default function Loading() {
   return (
@@ -10,7 +11,7 @@ export default function Loading() {
         alignItems: 'center',
         height: '100vh',
      }}>
-      <CircularProgress />
+      <img src={loader} alt='gif' />
     </Box>
   );
 }

@@ -34,6 +34,7 @@ import avt from '../assets/avatar_default.jpg'
 import { collection, doc, getDocs, query, where } from 'firebase/firestore';
 import { auth, db } from '../firebase/firebaseConfig';
 import { deleteUser } from 'firebase/auth';
+import Loading from '../components/loading/Loading';
 
 
 // ----------------------------------------------------------------------
@@ -93,6 +94,14 @@ export default function UserPage() {
   const [userList, setUserList] = useState([])
   
   const userRef = collection(db, "users");
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+  }, [])
 
   useEffect(() => {
     fetchUsers(); 
@@ -176,7 +185,9 @@ export default function UserPage() {
       <Helmet>
         <title> User | Minimal UI </title>
       </Helmet>
-
+    {loading ? (
+      <Loading/>
+    ) : (
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -212,7 +223,7 @@ export default function UserPage() {
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={userList[id].displayName} src={avt} />
+                            <Avatar alt={userList[id].displayName} src={`/assets/images/avatars/avatar_${index + 1}.jpg`} />
                             <Typography variant="subtitle2" noWrap>
                               {userList[id].displayName}
                             </Typography>
@@ -271,35 +282,9 @@ export default function UserPage() {
           />
         </Card>
       </Container>
+    )}
 
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
 
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
     </>
   );
 }

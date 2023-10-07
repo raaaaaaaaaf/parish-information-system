@@ -18,22 +18,41 @@ import {
   AppCurrentSubject,
   AppConversionRates,
 } from '../../sections/@dashboard/app';
-import { collection, getDoc, getDocs, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
 import { AuthContext } from '../../context/AuthContext';
+import Loading from '../../components/loading/Loading';
+import _ from 'lodash';
 function ClientAppPage () {
     const theme = useTheme();
+    const [docData, setDocData] = useState(null)
     const [reqDoc , setReqDoc] = useState(null);
     const [paidDoc, setPaidDoc] = useState(null);
     const [unPaidDoc, setUnPaidDoc] = useState(null);
+    const [loading, setLoading] = useState(true)
     const {currentUser} = useContext(AuthContext)
+    
+
+    useEffect(() => {
+      setTimeout(() => {
+        setLoading(false)
+      }, 2000)
+    }, [])
 
     useEffect(() => {
       const fetchData = async () => {
         try {
 
+          const data = [];
+
           const reqDoc = query(collection(db, "docsData"), where("uid", "==", currentUser.uid));
           const reqDocSnap = await getDocs(reqDoc);
+          reqDocSnap.forEach((doc) => {
+            data.push({
+              id: doc.id,
+              ...doc.data()
+            });
+          });
 
           const paidDoc = query(collection(db, "docsData"), where("isPaid", "==", true), where("uid", "==", currentUser.uid));
           const paidDocSnap = await getDocs(paidDoc);
@@ -41,6 +60,7 @@ function ClientAppPage () {
           const unPaidDoc = query(collection(db, "docsData"), where("isPaid", "==", false), where("uid", "==", currentUser.uid));
           const unPaidDocSnap = await getDocs(unPaidDoc);
 
+          setDocData(data);
           setReqDoc(reqDocSnap.docs.length)
           setPaidDoc(paidDocSnap.docs.length)
           setUnPaidDoc(unPaidDocSnap.docs.length)
@@ -51,14 +71,18 @@ function ClientAppPage () {
       }
       fetchData()
     }, [])
+    const sortedDocData = _.sortBy(docData, (data) => data.timeStamp.seconds).reverse();
 
     return (
       <>
         <Helmet>
           <title> Dashboard | Minimal UI </title>
         </Helmet>
-  
-        <Container maxWidth="xl">
+
+        {loading ? (
+          <Loading/>
+        ) : (
+          <Container maxWidth="xl">
           <Typography variant="h4" sx={{ mb: 5 }}>
             Hi, Client
           </Typography>
@@ -79,9 +103,26 @@ function ClientAppPage () {
             <Grid item xs={12} sm={6} md={3}>
               <AppWidgetSummary title="Bug Reports" total={234} color="error" icon={'ant-design:bug-filled'} />
             </Grid> */}
-  
+
+
+
+            <Grid item xs={12} md={6} lg={12}>
+              <AppOrderTimeline
+                title="Request Timeline"
+                list={sortedDocData.slice(0,5).map((data, index) => ({
+                  id: `${data.id}`,
+                  title: `${data.docName}`,
+                  type: `order${index + 1}`,
+                  time: `${new Date(data.timeStamp.seconds * 1000).toLocaleString("en-US")}`,
+                }))}
+              />
+            </Grid>
           </Grid>
+          
         </Container>
+        )}
+  
+
       </>
     );
 }

@@ -32,7 +32,9 @@ import { collection, deleteDoc, doc, getDocs, query, where } from 'firebase/fire
 import { db } from '../firebase/firebaseConfig';
 import { Link, useNavigate } from 'react-router-dom';
 import { EditFormContext } from '../context/EditContext';
+import _ from 'lodash';
 import Swal from 'sweetalert2';
+import Loading from '../components/loading/Loading';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -95,7 +97,15 @@ export default function BurialRecordPage() {
 
   const {setDocId} = useContext(EditFormContext)
 
+  const [loading, setLoading] = useState(true);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false)
+    }, 2000)
+  }, [])
 
   useEffect(() => {
     const fetchData = async () => {
@@ -119,6 +129,7 @@ export default function BurialRecordPage() {
     fetchData()
   }, [])
 
+  const sortedDocData = _.sortBy(docsList, (data) => data.timeStamp.seconds).reverse();
 
   const deleteBurial = async (id) => {
     const docsRef = doc(db, "docsData", id)
@@ -194,7 +205,9 @@ export default function BurialRecordPage() {
       <Helmet>
         <title> Burial Record | Birhen Del Carmen Online Parish Information System   </title>
       </Helmet>
-
+    {loading ? (
+      <Loading/>
+    ) : (
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
@@ -218,7 +231,7 @@ export default function BurialRecordPage() {
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
-                  {docsList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((docs, index) => {
+                  {sortedDocData.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((docs, index) => {
 
                     const selectedUser = selected.indexOf(docs.userName) !== -1;
 
@@ -320,35 +333,8 @@ export default function BurialRecordPage() {
           />
         </Card>
       </Container>
+    )}
 
-      <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
-          Edit
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover>
     </>
   );
 }

@@ -67,6 +67,7 @@ export default function RegisterPage() {
         showConfirmButton: false,
         timer: 1500
       })
+      navigate('/Dashboard/app')
     } catch (err) {
       Swal.fire({
         icon: 'error',
@@ -76,7 +77,7 @@ export default function RegisterPage() {
       })
       console.error(err);
     }
-    navigate('/Dashboard/app')
+    
   }
 
 
@@ -85,7 +86,7 @@ export default function RegisterPage() {
   return (
     <>
       <Helmet>
-        <title> Register | Pregnancy Monitoring System </title>
+        <title> Register | Birhen Del Carmen Online Parish Information System </title>
       </Helmet>
 
       <StyledRoot>
@@ -109,7 +110,7 @@ export default function RegisterPage() {
         <Container maxWidth="sm">
           <StyledContent>
             <Typography variant="h4" gutterBottom>
-            Sign up to Parish Information System
+            Sign up to Birhen Del Carmen Online Parish Information System
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
