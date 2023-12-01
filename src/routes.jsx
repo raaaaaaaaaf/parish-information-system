@@ -58,7 +58,7 @@ export default function Router() {
         // Redirect to login page if loading takes too long
         return <Navigate to="/login" replace />;
       } else {
-        return <Loader/>
+        return <Loading/>
       }
     }
     if(!currentUser) {

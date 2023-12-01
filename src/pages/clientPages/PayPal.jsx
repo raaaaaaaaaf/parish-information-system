@@ -4,8 +4,9 @@ import { doc, setDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
 import { AuthContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Dialog, DialogContent } from '@mui/material';
 
-const PayPal = () => {
+const PayPal = ({open, onClose}) => {
 
     const paypal = useRef();
     const [paypalData, setPaypalData] = useState({})
@@ -44,7 +45,12 @@ const PayPal = () => {
     }, [])
 
   return (
-    <div ref={paypal}></div>
+    <Dialog isOpen={open}>
+        <DialogContent>
+        <div ref={paypal}></div>
+        </DialogContent>
+    </Dialog>
+    
   )
 }
 
