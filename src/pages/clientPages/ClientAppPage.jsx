@@ -76,7 +76,7 @@ function ClientAppPage () {
     return (
       <>
         <Helmet>
-          <title> Dashboard | Minimal UI </title>
+          <title> Dashboard | Birhen Del Carmen Online Parish Information System </title>
         </Helmet>
 
         {loading ? (
