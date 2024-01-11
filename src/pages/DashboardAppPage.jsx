@@ -22,6 +22,7 @@ import { collection, doc, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import _ from 'lodash';
 import Loading from '../components/loading/Loading';
+import { fShortenNumber } from '../utils/formatNumber';
 // ----------------------------------------------------------------------
 
 export default function DashboardAppPage() {
@@ -91,19 +92,19 @@ export default function DashboardAppPage() {
 
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Users" total={userAmount} icon={'material-symbols:supervised-user-circle-outline'} />
+            <AppWidgetSummary title="Users" total={fShortenNumber(userAmount) } icon={'material-symbols:supervised-user-circle-outline'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Requested Document" total={reqDocAmount} color="info" icon={'vaadin:records'} />
+            <AppWidgetSummary title="Requested Document" total={fShortenNumber(reqDocAmount) } color="info" icon={'vaadin:records'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Paid Document" total={paidDoc} color="warning" icon={'material-symbols:paid-outline'} />
+            <AppWidgetSummary title="Paid Document" total={fShortenNumber(paidDoc) } color="warning" icon={'material-symbols:paid-outline'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="Unpaid Document" total={unPaidDoc} color="error" icon={'mdi:file-document-delete-outline'} />
+            <AppWidgetSummary title="Unpaid Document" total={fShortenNumber(unPaidDoc) } color="error" icon={'mdi:file-document-delete-outline'} />
           </Grid>
 
           <Grid item xs={12} md={6} lg={12}>

@@ -18,19 +18,14 @@ const adminConfig = [
     icon: <Iconify icon={'mdi:users'}/>,
   },
   {
-    title: 'Baptismal Records',
-    path: '/dashboard/baptismal',
+    title: 'Certificate Records',
+    path: '/dashboard/certificate',
     icon: <Iconify icon={'line-md:document-remove-twotone'}/>
   },
   {
-    title: 'Marriage Contract',
-    path: '/dashboard/marriage',
-    icon: <Iconify icon={'fluent:document-heart-24-filled'}/>
-  },
-  {
-    title: 'Burial Records',
-    path: '/dashboard/burial',
-    icon: <Iconify icon={'line-md:document-report-twotone'}/>
+    title: 'Monthly Report',
+    path: '/dashboard/report',
+    icon: <Iconify icon={'mdi:users'}/>,
   },
 
 ];

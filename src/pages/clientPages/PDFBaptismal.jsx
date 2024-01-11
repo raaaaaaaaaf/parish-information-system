@@ -3,6 +3,8 @@ import { Page, Text, View, Document, StyleSheet, pdf, Image, Font, Line } from '
 import { useNavigate, useParams } from 'react-router-dom';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase/firebaseConfig';
+import logo from '/assets/logo.png'
+import logo1 from '/assets/logo1.png'
 
 Font.register({
     family: 'Oswald',
@@ -14,10 +16,26 @@ const styles = StyleSheet.create({
     paddingBottom: 65,
     paddingHorizontal: 35,
   },
+  top: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  leftlogo: {
+    marginRight: 70,
+  },
+  rightlogo: {
+    marginLeft: 70,
+  },
+  image: {
+    width: 70, // Adjust the width as needed
+    height: 70,
+  },
   title: {
-    fontSize: 40,
-    textAlign: 'center',
-    fontFamily: 'Oswald'
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+    zIndex: 1,
   },
   church: {
     fontSize: 20,
@@ -108,13 +126,23 @@ const PDFBaptismal = () => {
           const PDF = (
             <Document>
             <Page size="A4" style={styles.body}>
-                <Text style={styles.title}>Certificate of Baptism</Text>
+            <View style={styles.top}>
+              <View style={styles.leftlogo}>
+                <Image style={styles.image} src={logo}></Image>
+              </View>
+              <Text style={styles.title}>Certificate of Baptism</Text>
+
+              <View style={styles.rightlogo}>
+                <Image style={styles.image} src={logo1}></Image>
+              </View>
+            </View>
+                
                 <Text style={styles.author}>Church of</Text>
                 <Text style={styles.church}>{docs.church}</Text>
                 <Text style={styles.subtitle}>This is to Certify</Text>
 
                 <Text style={styles.text}>That    
-                    <Text style={styles.name}>                                        {docs.childName}                                          </Text>,
+                    <Text style={styles.name}>                                        {docs.fullName}                                          </Text>,
                 </Text>
                 <Text style={styles.text}>Child of  <Text style={styles.name}>                                  Mrs.{docs.parent1}                                  </Text>,</Text>
                 <Text style={styles.text}>and <Text style={styles.name}>                                  Mr.{docs.parent2}                                  </Text>,</Text>

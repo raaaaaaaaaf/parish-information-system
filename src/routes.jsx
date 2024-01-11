@@ -22,7 +22,6 @@ import PDFBurial from './pages/clientPages/PDFBurial';
 import PDFBaptismal from './pages/clientPages/PDFBaptismal';
 import { AddFormContext } from './context/AddContext';
 import PDFMarriage from './pages/clientPages/PDFMarriage';
-import BaptismalRecordPage from './pages/BaptismalRecordPage';
 import BurialRecordPage from './pages/BurialRecordPage';
 import MarriageContractPage from './pages/MarriageContactPage';
 import EditBaptismal from './pages/EditBaptismal';
@@ -30,6 +29,9 @@ import MarriageContactPage from './pages/MarriageContactPage';
 import EditMarriage from './pages/EditMarriage';
 import EditBurial from './pages/EditBurial';
 import RegisterPage from './pages/RegisterPage';
+import Report from './pages/MonthlyReport';
+import MonthlyReport from './pages/MonthlyReport';
+import CertificateRecordPage from './pages/CertificateRecordPage';
 
 // ----------------------------------------------------------------------
 
@@ -96,16 +98,15 @@ export default function Router() {
         { element: <ProtectedRoute requiredRole="Admin"><Navigate to="/dashboard/app" /></ProtectedRoute>, index: true },
         { path: 'app', element: <ProtectedRoute requiredRole="Admin"><DashboardAppPage /></ProtectedRoute> },
         { path: 'user', element: <ProtectedRoute requiredRole="Admin"><UserPage /></ProtectedRoute> },
-        { path: 'baptismal', element: <ProtectedRoute requiredRole="Admin"><BaptismalRecordPage /></ProtectedRoute> },
-        { path: 'baptismal/editbaptismal/:id', element: <ProtectedRoute requiredRole="Admin"><EditBaptismal /></ProtectedRoute> },
-        { path: 'baptismal/viewbaptismal/:id', element: <ProtectedRoute requiredRole="Admin"><PDFBaptismal /></ProtectedRoute> },
-        { path: 'burial', element: <ProtectedRoute requiredRole="Admin"><BurialRecordPage /></ProtectedRoute> },
-        { path: 'burial/editburial/:id', element: <ProtectedRoute requiredRole="Admin"><EditBurial /></ProtectedRoute> },
-        { path: 'burial/viewburial/:id', element: <ProtectedRoute requiredRole="Admin"><PDFBurial /></ProtectedRoute> },
-        { path: 'marriage', element: <ProtectedRoute requiredRole="Admin"><MarriageContactPage /></ProtectedRoute> },
-        { path: 'marriage/editmarriage/:id', element: <ProtectedRoute requiredRole="Admin"><EditMarriage /></ProtectedRoute> },
-        { path: 'marriage/viewmarriage/:id', element: <ProtectedRoute requiredRole="Admin"><PDFMarriage /></ProtectedRoute> },
+        { path: 'certificate', element: <ProtectedRoute requiredRole="Admin"><CertificateRecordPage /></ProtectedRoute> },
+        { path: 'certificate/editbaptismal/:id', element: <ProtectedRoute requiredRole="Admin"><EditBaptismal /></ProtectedRoute> },
+        { path: 'certificate/viewbaptismal/:id', element: <ProtectedRoute requiredRole="Admin"><PDFBaptismal /></ProtectedRoute> },
+        { path: 'certificate/editburial/:id', element: <ProtectedRoute requiredRole="Admin"><EditBurial /></ProtectedRoute> },
+        { path: 'certificate/viewburial/:id', element: <ProtectedRoute requiredRole="Admin"><PDFBurial /></ProtectedRoute> },
+        { path: 'certificate/editmarriage/:id', element: <ProtectedRoute requiredRole="Admin"><EditMarriage /></ProtectedRoute> },
+        { path: 'certificate/viewmarriage/:id', element: <ProtectedRoute requiredRole="Admin"><PDFMarriage /></ProtectedRoute> },
         { path: 'blog', element: <ProtectedRoute requiredRole="Admin"><BlogPage /></ProtectedRoute> },
+        { path: 'report', element: <ProtectedRoute requiredRole="Admin"><MonthlyReport /></ProtectedRoute> },
 
       ],
     },

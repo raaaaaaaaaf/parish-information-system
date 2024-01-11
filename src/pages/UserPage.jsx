@@ -30,7 +30,7 @@ import Scrollbar from '../components/scrollbar';
 import { UserListHead, UserListToolbar } from '../sections/@dashboard/user';
 // mock
 import USERLIST from '../_mock/user';
-import { collection, getDoc, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import { collection, getDoc, getDocs, doc, deleteDoc, where, query } from 'firebase/firestore';
 import { db } from '../firebase/firebaseConfig';
 import Loading from '../components/loading/Loading';
 import Swal from 'sweetalert2';
@@ -93,34 +93,32 @@ export default function UserPage() {
 
   const [userList, setUserList] = useState([])
 
-  const [loading, setLoading] = useState(true)
-
-  const userRef = collection(db, "users")
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-       const data = await getDocs(userRef)
-       const filteredData = data.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-      }));
-      setUserList(filteredData)
+        const data = [];
 
-      } catch(err) {
+        const docsQuery = query(collection(db, "users"), where("role", "==", "User"));
+        const docsSnap = await getDocs(docsQuery);
+        docsSnap.forEach((doc) => {
+          data.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+        setUserList(data);
+        setLoading(false);
+        console.log(data);
+      } catch (err) {
         console.error(err);
       }
-    }
-    fetchData()
-  }, [])
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false)
-    }, 2000)
-  }, [])
+    };
+    fetchData();
+  }, []);
 
   const deleteProfile = async (id) => {
     try {

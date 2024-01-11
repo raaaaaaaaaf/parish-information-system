@@ -46,7 +46,7 @@ export default function ReqBaptismal() {
     try {
       await addDoc(docsRef, {
         born: formData.born,
-        childName: formData.childName,
+        fullName: formData.childName,
         church: formData.church,
         docName: formData.docName,
         dob: formData.dob,

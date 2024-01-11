@@ -23,6 +23,7 @@ import { db } from '../../firebase/firebaseConfig';
 import { AuthContext } from '../../context/AuthContext';
 import Loading from '../../components/loading/Loading';
 import _ from 'lodash';
+import { fShortenNumber } from '../../utils/formatNumber';
 function ClientAppPage () {
     const theme = useTheme();
     const [docData, setDocData] = useState(null)
@@ -89,15 +90,15 @@ function ClientAppPage () {
   
           <Grid container spacing={3}>
             <Grid item xs={12} sm={6} md={4}>
-              <AppWidgetSummary title="Requested Document" total={reqDoc} color="warning" icon={'ant-design:android-filled'} />
+              <AppWidgetSummary title="Requested Document" total={fShortenNumber(reqDoc) } color="warning" icon={'ant-design:android-filled'} />
             </Grid>
   
             <Grid item xs={12} sm={6} md={4}>
-              <AppWidgetSummary title="Paid Document" total={paidDoc} color="warning" icon={'ant-design:apple-filled'} />
+              <AppWidgetSummary title="Paid Document" total={fShortenNumber(paidDoc) } color="warning" icon={'ant-design:apple-filled'} />
             </Grid>
   
             <Grid item xs={12} sm={6} md={4}>
-              <AppWidgetSummary title="Unpaid Document" total={unPaidDoc} color="warning" icon={'ant-design:windows-filled'} />
+              <AppWidgetSummary title="Unpaid Document" total={fShortenNumber(unPaidDoc) } color="warning" icon={'ant-design:windows-filled'} />
             </Grid>
   {/* 
             <Grid item xs={12} sm={6} md={3}>
